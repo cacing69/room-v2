@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:room_v2/src/core/bloc/bloc_with_state.dart';
+import 'package:room_v2/src/core/utils/helper.dart';
 import 'package:room_v2/src/modules/order/bloc/remote_order_bloc.dart';
 import 'package:room_v2/src/modules/order/models/order.dart';
 
@@ -51,7 +52,7 @@ class OrderScreen extends HookWidget {
         );
       } else {
         if (state.data.isNotEmpty) {
-          return _buildOrder(scrollController, state.data, state.noMoredata);
+          return _buildOrder(scrollController, state);
         }
       }
 
@@ -60,9 +61,9 @@ class OrderScreen extends HookWidget {
   }
 
   Widget _buildOrder(
-      ScrollController scrollController, List<Order> data, bool noMoreData) {
+      ScrollController scrollController, RemoteOrderState state) {
     return ListView(controller: scrollController, children: [
-      ...List<Widget>.from(data.map((e) => Builder(
+      ...List<Widget>.from(state.data.map((e) => Builder(
           builder: (context) => Container(
                 height: 68,
                 child: Padding(
@@ -82,13 +83,15 @@ class OrderScreen extends HookWidget {
                   ),
                 ),
               )))),
-      if (noMoreData) ...[
+      if (state.noMoredata) ...[
         Text("No Data"),
       ] else ...[
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 14),
-          child: CupertinoActivityIndicator(),
-        )
+        if (state.isLoading) ...[
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 14),
+            child: CupertinoActivityIndicator(),
+          )
+        ]
       ]
     ]);
   }
@@ -101,11 +104,18 @@ class OrderScreen extends HookWidget {
     // final remoteOrderBloc = context.watch<RemoteOrderBloc>();
     final state = remoteOrderBloc.blocProcessState;
 
-    if (currentScroll == maxScroll && state == BlocProcessState.idle) {
+    if (currentScroll == maxScroll) {
       // remote
-      context.read<RemoteOrderBloc>()
-        ..add(RemoteOrderLoading())
-        ..add(RemoteOrderFetched());
+      if (state == BlocProcessState.idle) {
+        context.read<RemoteOrderBloc>()
+          ..add(RemoteOrderLoading())
+          ..add(RemoteOrderFetched());
+      } else {
+        if (remoteOrderBloc.state.isLoading && state == BlocProcessState.busy) {
+          // showSnackBar(context, message: "Fetching Data");
+          // Show info load data
+        }
+      }
     }
   }
 }

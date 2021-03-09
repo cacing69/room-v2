@@ -6,16 +6,16 @@ import 'package:room_v2/src/modules/order/models/order.dart';
 import 'package:room_v2/src/modules/order/params/order_request_params.dart';
 import 'package:room_v2/src/core/resources/data_state.dart';
 import 'package:dio/dio.dart';
-import 'package:room_v2/src/modules/order/usecase/get_order_usecase.dart';
+import 'package:room_v2/src/modules/order/repositories/order_repository.dart';
 
 part 'remote_order_event.dart';
 part 'remote_order_state.dart';
 
 class RemoteOrderBloc
     extends BlocWithState<RemoteOrderEvent, RemoteOrderState> {
-  final GetOrderUseCase _getOrderUseCase;
+  final OrderRepository _orderRepository;
 
-  RemoteOrderBloc(this._getOrderUseCase) : super(RemoteOrderState());
+  RemoteOrderBloc(this._orderRepository) : super(RemoteOrderState());
 
   final List<Order> _orders = [];
 
@@ -38,8 +38,8 @@ class RemoteOrderBloc
 
   Stream<RemoteOrderState> _getOrders(RemoteOrderEvent event) async* {
     yield* runBlocProcess(() async* {
-      final dataState = await _getOrderUseCase(
-          params: OrderRequestParams(page: _page, limit: 20));
+      final dataState = await _orderRepository
+          .getOrders(OrderRequestParams(limit: 20, page: _page));
 
       if (dataState is DataSuccess && dataState.data.data.isNotEmpty) {
         List<Order> orders = dataState.data.data;

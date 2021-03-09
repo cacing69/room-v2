@@ -16,6 +16,9 @@ void showSnackBar(BuildContext context, {@required String message}) {
   ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
     ..showSnackBar(
-      SnackBar(content: Text(message)),
+      SnackBar(
+        content: Text(message),
+        duration: Duration(milliseconds: 500),
+      ),
     );
 }

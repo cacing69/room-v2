@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:room_v2/src/core/bloc/bloc_with_state.dart';
 import 'package:room_v2/src/core/form/password_form.dart';
 import 'package:room_v2/src/core/form/username_form.dart';
 import 'package:bloc/bloc.dart';
@@ -9,22 +10,24 @@ import 'package:formz/formz.dart';
 part 'login_event.dart';
 part 'login_state.dart';
 
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
+class LoginBloc extends BlocWithState<LoginEvent, LoginState> {
   LoginBloc() : super(LoginState());
 
   @override
   Stream<LoginState> mapEventToState(
     LoginEvent event,
   ) async* {
-    if (event is LoginUsernameChanged) {
-      yield _mapUsernameChangedToState(event, state);
-    } else if (event is LoginPasswordChanged) {
-      yield _mapPasswordChangedToState(event, state);
-    } else if (event is LoginSubmitted) {
-      yield* _mapLoginSubmittedToState(event, state);
-    } else if (event is LoginReInitialize) {
-      yield _mapLoginReInitializeToState(event, state);
-    }
+    yield* runBlocProcess(() async* {
+      if (event is LoginUsernameChanged) {
+        yield _mapUsernameChangedToState(event, state);
+      } else if (event is LoginPasswordChanged) {
+        yield _mapPasswordChangedToState(event, state);
+      } else if (event is LoginSubmitted) {
+        yield* _mapLoginSubmittedToState(event, state);
+      } else if (event is LoginReInitialize) {
+        yield _mapLoginReInitializeToState(event, state);
+      }
+    });
   }
 
   LoginState _mapLoginReInitializeToState(
