@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:room_v2/src/core/bloc/bloc_with_state.dart';
-import 'package:room_v2/src/core/params/order_request_params.dart';
+import 'package:room_v2/src/modules/order/models/order.dart';
+import 'package:room_v2/src/modules/order/params/order_request_params.dart';
 import 'package:room_v2/src/core/resources/data_state.dart';
-import 'package:room_v2/src/domain/entities/order.dart';
 import 'package:dio/dio.dart';
-import 'package:room_v2/src/domain/usecases/get_order_usecase.dart';
+import 'package:room_v2/src/modules/order/usecase/get_order_usecase.dart';
 
 part 'remote_order_event.dart';
 part 'remote_order_state.dart';
@@ -49,7 +49,6 @@ class RemoteOrderBloc
 
         _page++;
 
-        // yield RemoteOrderDone(data: _orders, noMoredata: noMoreData);
         yield state.copyWith(
             data: _orders,
             noMoredata: noMoreData,

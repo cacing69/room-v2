@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:room_v2/src/modules/home/screen/home_screen.dart';
 import 'package:room_v2/src/modules/login/screen/login_screen.dart';
 import 'package:room_v2/src/modules/setting/screen/setting_screen.dart';
-import 'package:room_v2/src/presentation/views/order_view.dart';
+import 'package:room_v2/src/modules/order/screens/order_view.dart';
 
 class AppRouter {
   Route onGenerateRoute(RouteSettings route) {

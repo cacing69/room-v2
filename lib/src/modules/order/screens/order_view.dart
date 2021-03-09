@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:room_v2/src/core/bloc/bloc_with_state.dart';
-import 'package:room_v2/src/domain/entities/order.dart';
-import 'package:room_v2/src/presentation/blocs/remote_order/remote_order_bloc.dart';
+import 'package:room_v2/src/modules/order/bloc/remote_order_bloc.dart';
+import 'package:room_v2/src/modules/order/models/order.dart';
 
 class OrderView extends HookWidget {
   const OrderView({Key key}) : super(key: key);

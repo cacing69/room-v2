@@ -1,6 +1,6 @@
 import 'package:room_v2/src/modules/auth/cubit/auth_cubit.dart';
 import 'package:room_v2/src/modules/login/bloc/login_bloc.dart';
-import 'package:room_v2/src/utilities/helper.dart';
+import 'package:room_v2/src/core/utils/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

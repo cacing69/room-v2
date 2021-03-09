@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:room_v2/src/data/models/order_list_response.dart';
 import 'package:room_v2/src/core/utils/constants.dart';
+import 'package:room_v2/src/modules/order/models/order_list_response.dart';
 
 part 'roomthrift_api_service.g.dart';
 
