@@ -57,7 +57,7 @@ class RemoteOrderBloc
       }
 
       if (dataState is DataFailed) {
-        yield state.copyWith(error: dataState.error);
+        yield state.copyWith(error: dataState.error, isLoading: false);
       }
     });
   }

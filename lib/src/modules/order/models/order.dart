@@ -4,6 +4,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'order.g.dart';
 
 @JsonSerializable()
+// fieldRename: FieldRename.snake
+// @JsonKey(defaultValue: false)
 class Order extends Equatable {
   @JsonKey(name: "order_id")
   final int id;

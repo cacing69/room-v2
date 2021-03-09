@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:room_v2/src/modules/home/screen/home_screen.dart';
 import 'package:room_v2/src/modules/login/screen/login_screen.dart';
 import 'package:room_v2/src/modules/setting/screen/setting_screen.dart';
-import 'package:room_v2/src/modules/order/screens/order_view.dart';
+import 'package:room_v2/src/modules/order/screens/order_screen.dart';
 
 class AppRouter {
   Route onGenerateRoute(RouteSettings route) {
@@ -17,7 +17,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => SettingScreen());
         break;
       case "/order":
-        return MaterialPageRoute(builder: (_) => OrderView());
+        return MaterialPageRoute(builder: (_) => OrderScreen());
         break;
       default:
         return MaterialPageRoute(

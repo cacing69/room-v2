@@ -6,19 +6,29 @@ import 'package:room_v2/src/core/bloc/bloc_with_state.dart';
 import 'package:room_v2/src/modules/order/bloc/remote_order_bloc.dart';
 import 'package:room_v2/src/modules/order/models/order.dart';
 
-class OrderView extends HookWidget {
-  const OrderView({Key key}) : super(key: key);
+class OrderScreen extends HookWidget {
+  const OrderScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = useScrollController();
+    final scrollController = useMemoized(() => ScrollController());
+
+    // useEffect(() {
+    //   scrollController
+    //       .addListener(() => _onScrollListener(context, scrollController));
+
+    //   return scrollController.dispose;
+    // }, [scrollController]);
+    useEffect(() {
+      return () => scrollController.dispose();
+    }, []);
 
     useEffect(() {
       scrollController
           .addListener(() => _onScrollListener(context, scrollController));
-
-      return scrollController.dispose;
-    }, [scrollController]);
+      return () => scrollController
+          .removeListener(() => _onScrollListener(context, scrollController));
+    }, [key]);
 
     return Scaffold(
       body: _buildBody(scrollController),
@@ -33,15 +43,18 @@ class OrderView extends HookWidget {
         );
       }
 
-      // if (state is RemoteOrderError) {
-      //   return Center(
-      //     child: Icon(Icons.refresh),
-      //   );
-      // }
-
-      if (state.data.isNotEmpty) {
-        return _buildOrder(scrollController, state.data, state.noMoredata);
+      if (state.error != null) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [Icon(Icons.refresh), Text(state.error.message)],
+        );
+      } else {
+        if (state.data.isNotEmpty) {
+          return _buildOrder(scrollController, state.data, state.noMoredata);
+        }
       }
+
       return SizedBox();
     });
   }
@@ -50,9 +63,24 @@ class OrderView extends HookWidget {
       ScrollController scrollController, List<Order> data, bool noMoreData) {
     return ListView(controller: scrollController, children: [
       ...List<Widget>.from(data.map((e) => Builder(
-          builder: (context) => Text(
-                e.no,
-                style: Theme.of(context).textTheme.headline4,
+          builder: (context) => Container(
+                height: 68,
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        e.no,
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      Text(
+                        e.status,
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                    ],
+                  ),
+                ),
               )))),
       if (noMoreData) ...[
         Text("No Data"),

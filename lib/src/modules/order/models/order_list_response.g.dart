@@ -19,7 +19,10 @@ OrderListResponse _$OrderListResponseFromJson(Map<String, dynamic> json) {
     prevPageUrl: json['prevPageUrl'] as String,
     to: json['to'] as int,
     total: json['total'] as int,
-    data: (json["data"] as List).map((i) => new Order.fromJson(i)).toList(),
+    data: (json['data'] as List)
+        ?.map(
+            (e) => e == null ? null : Order.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
   );
 }
 
@@ -36,5 +39,5 @@ Map<String, dynamic> _$OrderListResponseToJson(OrderListResponse instance) =>
       'prevPageUrl': instance.prevPageUrl,
       'to': instance.to,
       'total': instance.total,
-      'data': instance.data,
+      'data': instance.data?.map((e) => e?.toJson())?.toList(),
     };

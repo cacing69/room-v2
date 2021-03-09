@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:room_v2/src/modules/order/models/order.dart';
 part 'order_list_response.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class OrderListResponse {
   final bool status;
 
