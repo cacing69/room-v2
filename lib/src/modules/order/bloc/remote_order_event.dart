@@ -15,14 +15,18 @@ abstract class RemoteOrderEvent extends Equatable {
 //   const NextOrders();
 // }
 
-class RemoteOrderLoading extends RemoteOrderEvent {
-  RemoteOrderLoading();
+class RemoteOrderCalled extends RemoteOrderEvent {
+  RemoteOrderCalled();
 }
 
 class RemoteOrderFetched extends RemoteOrderEvent {
   RemoteOrderFetched();
 }
 
-class RemoteOrderFaild extends RemoteOrderEvent {
-  RemoteOrderFaild();
+class RemoteOrderRefreshed extends RemoteOrderEvent {
+  RemoteOrderRefreshed();
+}
+
+class RemoteOrderFailed extends RemoteOrderEvent {
+  RemoteOrderFailed();
 }

@@ -17,47 +17,63 @@ class RemoteOrderBloc
 
   RemoteOrderBloc(this._orderRepository) : super(RemoteOrderState());
 
-  final List<Order> _orders = [];
+  final List<Order> _tmpData = [];
 
-  int _page = 1;
-
-  static const int _pageSize = 20;
+  // int _page = 1;
 
   @override
   Stream<RemoteOrderState> mapEventToState(
     RemoteOrderEvent event,
   ) async* {
-    if (event is RemoteOrderFetched) {
-      yield* _getOrders(event);
-    }
-
-    if (event is RemoteOrderLoading) {
+    if (event is RemoteOrderCalled) {
       yield state.copyWith(isLoading: true);
+    } else if (event is RemoteOrderRefreshed) {
+      _tmpData.clear();
+
+      yield state.copyWith(
+          isLoading: false,
+          isFirst: true,
+          data: List<Order>.empty(),
+          error: null,
+          page: 1);
+    } else if (event is RemoteOrderFetched) {
+      yield* _mapRemoteOrderFetchedToState(event, state);
     }
   }
 
-  Stream<RemoteOrderState> _getOrders(RemoteOrderEvent event) async* {
+  Stream<RemoteOrderState> _mapRemoteOrderFetchedToState(
+      RemoteOrderEvent event, RemoteOrderState state) async* {
     yield* runBlocProcess(() async* {
-      final dataState = await _orderRepository
-          .getOrders(OrderRequestParams(limit: 20, page: _page));
+      final _responseState = await _orderRepository
+          .getOrders(OrderRequestParams(limit: 20, page: state.page));
+      bool hasNext = true;
+      if (_responseState is DataSuccess &&
+          _responseState.data.data.isNotEmpty) {
+        List<Order> _dataResponse = _responseState.data.data;
+        hasNext = _responseState.data.total != _dataResponse.length;
 
-      if (dataState is DataSuccess && dataState.data.data.isNotEmpty) {
-        List<Order> orders = dataState.data.data;
-        final noMoreData = dataState.data.total <= orders.length;
+        // List<Order> _blocOrderState = state.data;
 
-        _orders.addAll(orders);
+        _tmpData.addAll(_dataResponse);
 
-        _page++;
+        print("page:" + state.page.toString());
+        print("length:" + _tmpData.length.toString());
+
+        int _page = state.page + 1;
 
         yield state.copyWith(
-            data: _orders,
-            noMoredata: noMoreData,
+            data: _tmpData,
+            hasNext: hasNext,
             isFirst: false,
-            isLoading: false);
+            isLoading: false,
+            page: _page);
+      } else {
+        hasNext = _responseState.data.total != state.data.length;
+        yield state.copyWith(hasNext: false, isFirst: false, isLoading: false);
       }
 
-      if (dataState is DataFailed) {
-        yield state.copyWith(error: dataState.error, isLoading: false);
+      if (_responseState is DataFailed) {
+        yield state.copyWith(error: _responseState.error, isLoading: false);
       }
     });
   }
