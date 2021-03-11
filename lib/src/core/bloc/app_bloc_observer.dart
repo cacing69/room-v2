@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AppBlocObserver extends BlocObserver {
   @override
   void onChange(Cubit cubit, Change change) {
-    print(change);
+    // print(change);
     super.onChange(cubit, change);
   }
 
@@ -27,6 +27,7 @@ class AppBlocObserver extends BlocObserver {
 
   @override
   void onEvent(Bloc bloc, Object event) {
+    print(event);
     // TODO: implement onEvent
     super.onEvent(bloc, event);
   }

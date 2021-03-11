@@ -14,8 +14,8 @@ class OrderRepository {
   Future<DataState<OrderListResponse>> getOrders(
       OrderRequestParams params) async {
     try {
-      final httpResponse =
-          await roomthriftApiService.getOrder(page: params.page, limit: 20);
+      final httpResponse = await roomthriftApiService.getOrder(
+          page: params.page, limit: 20, q: params.q);
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);

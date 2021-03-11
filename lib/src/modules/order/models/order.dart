@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -28,4 +30,22 @@ class Order extends Equatable {
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
   Map<String, dynamic> toJson() => _$OrderToJson(this);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'no': no,
+      'status': status,
+    };
+  }
+
+  factory Order.fromMap(Map<String, dynamic> map) {
+    if (map == null) return null;
+
+    return Order(
+      id: map['id'],
+      no: map['no'],
+      status: map['status'],
+    );
+  }
 }

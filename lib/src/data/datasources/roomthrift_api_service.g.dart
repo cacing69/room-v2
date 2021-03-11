@@ -17,9 +17,13 @@ class _RoomthriftApiService implements RoomthriftApiService {
   String baseUrl;
 
   @override
-  Future<HttpResponse<OrderListResponse>> getOrder({page, limit}) async {
+  Future<HttpResponse<OrderListResponse>> getOrder({page, limit, q}) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'page': page, r'limit': limit};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'limit': limit,
+      r'q': q
+    };
     queryParameters.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('/order',

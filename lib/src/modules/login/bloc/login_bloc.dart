@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:room_v2/src/core/bloc/bloc_with_state.dart';
 import 'package:room_v2/src/core/form/password_form.dart';
 import 'package:room_v2/src/core/form/username_form.dart';
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 

@@ -15,5 +15,6 @@ abstract class RoomthriftApiService {
   Future<HttpResponse<OrderListResponse>> getOrder({
     @Query('page') int page,
     @Query('limit') int limit,
+    @Query('q') String q,
   });
 }
