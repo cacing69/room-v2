@@ -7,7 +7,7 @@ import 'package:room_v2/src/modules/order/params/order_request_params.dart';
 import 'package:room_v2/src/core/resources/data_state.dart';
 import 'package:dio/dio.dart';
 import 'package:room_v2/src/modules/order/repositories/order_repository.dart';
-import 'package:rxdart/rxdart.dart';
+// import 'package:rxdart/rxdart.dart';
 
 part 'order_event.dart';
 part 'order_state.dart';
@@ -18,7 +18,7 @@ class OrderBloc extends BlocWithState<OrderEvent, OrderState> {
   OrderBloc(this._orderRepository) : super(OrderState());
 
   final List<Order> _tmpData = [];
-  final BehaviorSubject _searching = BehaviorSubject<String>();
+  // final BehaviorSubject _searching = BehaviorSubject<String>();
 
   @override
   Stream<OrderState> mapEventToState(
@@ -26,7 +26,9 @@ class OrderBloc extends BlocWithState<OrderEvent, OrderState> {
   ) async* {
     if (event is OrderCalled) {
       yield state.copyWith(isLoading: true);
-    } else if (event is OrderRefreshed) {
+    }
+
+    if (event is OrderRefreshed) {
       _tmpData.clear();
 
       yield state.copyWith(
@@ -35,13 +37,24 @@ class OrderBloc extends BlocWithState<OrderEvent, OrderState> {
           data: List<Order>.empty(),
           error: DioError(),
           isError: false,
-          requestParams: OrderRequestParams());
-    } else if (event is OrderFetched) {
+          requestParams: state.requestParams.copyWith(page: 1, limit: 20));
+    }
+
+    if (event is OrderFetched) {
       yield* _mapOrderFetchedToState(event, state);
-    } else if (event is OrderSearched) {
+    }
+
+    if (event is OrderSearched) {
       yield state.copyWith(
           requestParams: state.requestParams.copyWith(q: event.query));
-    } else if (event is OrderReseted) {
+    }
+
+    if (event is OrderSortByChanged) {
+      yield state.copyWith(
+          requestParams: state.requestParams.copyWith(orderBy: event.sortBy));
+    }
+
+    if (event is OrderReseted) {
       _tmpData.clear();
       yield state.copyWith(
           data: List.empty(),
@@ -49,7 +62,9 @@ class OrderBloc extends BlocWithState<OrderEvent, OrderState> {
           isError: false,
           isLoading: true,
           requestParams: state.requestParams.copyWith(page: 1));
-    } else if (event is OrderSearchReseted) {
+    }
+
+    if (event is OrderSearchReseted) {
       yield state.copyWith(
           requestParams: state.requestParams.copyWithQueryNull());
     }

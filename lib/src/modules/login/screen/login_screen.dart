@@ -49,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Text("ISI SEMBARANG AJA"),
             Builder(builder: (context) {
               final username =
                   context.select((LoginBloc bloc) => bloc.state.username);

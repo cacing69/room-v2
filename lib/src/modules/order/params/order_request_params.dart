@@ -5,6 +5,7 @@ class OrderRequestParams {
   final String mode;
   final int limit;
   final int page;
+  final String orderBy;
 
   const OrderRequestParams({
     this.status,
@@ -13,6 +14,7 @@ class OrderRequestParams {
     this.mode,
     this.limit = 10,
     this.page = 1,
+    this.orderBy,
   });
 
   OrderRequestParams copyWith({
@@ -22,6 +24,7 @@ class OrderRequestParams {
     String mode,
     int limit,
     int page,
+    String orderBy,
   }) {
     return OrderRequestParams(
       status: status ?? this.status,
@@ -30,6 +33,7 @@ class OrderRequestParams {
       mode: mode ?? this.mode,
       limit: limit ?? this.limit,
       page: page ?? this.page,
+      orderBy: orderBy ?? this.orderBy,
     );
   }
 
@@ -48,6 +52,7 @@ class OrderRequestParams {
       mode: mode ?? this.mode,
       limit: limit ?? this.limit,
       page: page ?? this.page,
+      orderBy: orderBy ?? this.orderBy,
     );
   }
 }

@@ -16,5 +16,6 @@ abstract class RoomthriftApiService {
     @Query('page') int page,
     @Query('limit') int limit,
     @Query('q') String q,
+    @Query('order_by') String orderBy,
   });
 }

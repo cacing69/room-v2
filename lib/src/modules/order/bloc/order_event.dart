@@ -37,3 +37,10 @@ class OrderSearched extends OrderEvent {
     this.query,
   );
 }
+
+class OrderSortByChanged extends OrderEvent {
+  final String sortBy;
+  OrderSortByChanged(
+    this.sortBy,
+  );
+}

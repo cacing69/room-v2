@@ -15,7 +15,7 @@ class OrderRepository {
       OrderRequestParams params) async {
     try {
       final httpResponse = await roomthriftApiService.getOrder(
-          page: params.page, limit: 20, q: params.q);
+          page: params.page, limit: 20, q: params.q, orderBy: params.orderBy);
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);
